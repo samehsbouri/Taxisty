@@ -252,7 +252,7 @@ section.formulaire {
 
 .form-container .btn{
     flex: 0.5 0.5 3.5rem;
-    padding: 10px 34px;
+    padding: 10px 10px;
     border: none;
     border-radius: 0.5rem;
     background: #474fa0;
@@ -262,7 +262,8 @@ section.formulaire {
     cursor: pointer;
 }
 .form-container .btn:hover{
-    background-color: green;
+    background-color: #fe5b3d;
+    
 }
 
 .form-container .btn1:hover{
