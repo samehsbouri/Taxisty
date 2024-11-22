@@ -63,3 +63,46 @@ form.onsubmit = (e)=>{
     window.location.href = form.getAttribute("action"); //redirecting user to the specified url which is inside action attribute of form tag
   }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  var map, marker;
+  const locationInput = document.getElementById('autolocation');
+  const destinationInput = document.getElementById('destination');
+
+  function initMap(latitude, longitude) {
+      map = L.map('mapid').setView([latitude, longitude], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      marker = L.marker([latitude, longitude], {
+          draggable: true
+      }).addTo(map)
+      .bindPopup('Your current location. Drag to change destination.')
+      .openPopup()
+      .on('dragend', function() {
+          const position = marker.getLatLng();
+          destinationInput.value = `${position.lat}, ${position.lng}`;
+      });
+
+      // Initially populate destination field
+      destinationInput.value = `${latitude}, ${longitude}`;
+  }
+
+  function fetchLocation() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              const { latitude, longitude } = position.coords;
+              locationInput.value = `${latitude}, ${longitude}`;
+              initMap(latitude, longitude);
+          }, function() {
+              alert('Geolocation access denied. Enable location access and try again.');
+          });
+      } else {
+          alert('Geolocation is not supported by this browser.');
+      }
+  }
+
+  fetchLocation();
+});
